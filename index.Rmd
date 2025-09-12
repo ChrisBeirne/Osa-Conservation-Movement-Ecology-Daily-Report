@@ -48,7 +48,7 @@ dir.create(data_path)
 # 
 # ## Find Google Drive folder 'Centre Circle Data & Info'
 drive_download(as_id("1cpK5hRs7Nl71a-Eks813eTL3sx_lVCiSsL7w2MDg0OU"),
-                path="data/trap_deployments.xlsx")
+                path="data/trap_deployments.xlsx", overwrite=T)
 sheet02 <- read_excel("data/trap_deployments.xlsx",
                       sheet="Location")
 
@@ -72,13 +72,16 @@ tmp <-getMovebankAnimals(study=2526574641,login=loginStored)
 tmp3 <- getMovebankAnimals(study=2957292408,login=loginStored)
 # andean condor foundation
 tmp4 <- getMovebankAnimals(study=2885579493,login=loginStored)
+# peccary project
+tmp5 <- getMovebankAnimals(study=		5956356622,login=loginStored)
+tmp5 <- tmp5[tmp5$local_identifier!="TEST",]
 
 # Move nickname to locak_identifier
 tmp4$local_identifier <- tmp4$nick_name
 tmp4$animalName <- tmp4$nick_name
 
 animals <- rbind(animals, tmp,#tmp2
-                 tmp3, tmp4)
+                 tmp3, tmp4, tmp5)
 
 # They are duplicated as there are two types of data - subset to GPS
 # They vary by the field "sensor_type_id"
@@ -120,22 +123,24 @@ tmp4 <- getMovebankData(study=2957292408, login=loginStored,  removeDuplicatedTi
 tmp5 <- getMovebankData(study=2885579493, login=loginStored,  removeDuplicatedTimestamps=TRUE,
                        timestamp_start=start_mammal)
 
+#Peccary project
+tmp6 <- getMovebankData(study=5956356622, login=loginStored,  removeDuplicatedTimestamps=TRUE,
+                       timestamp_start=start_mammal)
+
 ec_names <- data.frame(code=row.names(tmp5@idData), name=(tmp5@idData$nick_name))
 
 mov_dat <- moveStack(tmp1, 
                      #tmp3, 
                      tmp4, 
-                     tmp5)
+                     tmp5,
+                     tmp6)
 
 # Remove the random zeros
 summary(mov_dat$location_long)
 mov_dat <- mov_dat[mov_dat$location_long<0,]
 
-
-
 #Add the names
 mov_dat$name <- trackId(mov_dat)
-
 
 # Convert timezone
 mov_dat$timestamp <- with_tz(timestamps(mov_dat), tz="America/Costa_Rica")
@@ -149,8 +154,10 @@ dat <- as.data.frame(mov_dat)
 # Convert dat to costa rica time
 dat$timestamp <- with_tz(dat$timestamp, tzone = "America/Costa_Rica")
 
+tmp <- animals[, c("individual_id", "animalName")]
+tmp <- tmp[duplicated(tmp)==F,]
 # Add the location data
-dat <- left_join(dat, animals[, c("tag_id", "animalName")])
+dat <- left_join(dat, tmp, by="individual_id")
 # Sort the names out
 
 dat$animalName <- sub('\\_.*', '', dat$animalName)
@@ -228,6 +235,13 @@ concolor <- makeIcon(
   iconWidth = 38, iconHeight = 36,
   iconAnchorX = 22, iconAnchorY = 39)
 
+pecari <- makeIcon(
+  iconUrl = "https://raw.githubusercontent.com/ChrisBeirne/Osa-Conservation-Movement-Ecology-Daily-Report/main/icons/WLP.png",
+  iconWidth = 38, iconHeight = 30,
+  iconAnchorX = 22, iconAnchorY = 39)
+
+
+
 
 iconSet <- iconList(aura= aura,
                     papa =papa,
@@ -237,7 +251,8 @@ iconSet <- iconList(aura= aura,
                     bairdii = bairdii,
                     microtis = microtis,
                     onca=onca,
-                    concolor=concolor)
+                    concolor=concolor,
+                    pecari=pecari)
 
 dat$icon <- sub(".*? ", "", dat$taxon_canonical_name)
 
@@ -351,11 +366,18 @@ last_sum  <- dat %>%
   group_by(name) %>%
   slice(which.max(timestamp))
 
+first_sum  <- dat %>% 
+  group_by(name) %>%
+  slice(which.min(timestamp))
 
 tmp <- last_sum[, c("name","taxon_canonical_name","country", "timestamp", "diff_time")]
+tmp_first <- first_sum[, c("name","taxon_canonical_name","country", "timestamp", "diff_time")]
+
+
 colnames(tmp)[colnames(tmp)=="diff_time"] <- "time_since_checkin_h"
 colnames(tmp)[colnames(tmp)=="timestamp"] <- "last_timestamp"
 check_in_summary <- tmp[order(tmp$country, tmp$time_since_checkin_h),]
+first_check <- tmp_first[order(tmp$country, tmp$time_since_checkin_h),]
 
 
 ```
@@ -374,8 +396,9 @@ check_in_summary[,c(1,2,3,5)] %>%
   kableExtra::scroll_box(width = "100%")
 
 
+
 ### Add additional data shown later
-check_in_summary$duration <- difftime(check_in_summary$last_timestamp, start_t, "days")
+check_in_summary$duration <- round(difftime(check_in_summary$last_timestamp,first_check$timestamp , units="hours"),1)
 
 ### Total locations Mean eobs battery power, eobs accuracy
 tmp_sum <- dat %>% group_by(name) %>% dplyr::summarise(total_obs=n(), mean_batt=mean(eobs_battery_voltage, na.rm=T), loc_accuracy=mean(eobs_horizontal_accuracy_estimate, na.rm=T))
@@ -427,9 +450,12 @@ fig <- plot_ly(data, x = ~country, y = ~data$`Sarcoramphus papa`, type = 'bar', 
 fig <- fig %>% add_trace(y = ~data$`Cathartes melambrotus`, name = 'GYH vulture')
 fig <- fig %>% add_trace(y = ~data$`Cathartes aura`, name = 'Turkey vulture')
 fig <- fig %>% add_trace(y = ~data$`Coragyps atratus`, name = 'Black vulture')
-fig <- fig %>% add_trace(y = ~data$`Tapirus bairdii`, name = 'Tapir')
-#fig <- fig %>% add_trace(y = ~data$`Panthera onca`, name = 'Jaguar')
+#fig <- fig %>% add_trace(y = ~data$`Tapirus bairdii`, name = 'Tapir')
+fig <- fig %>% add_trace(y = ~data$`Panthera onca`, name = 'Jaguar')
 fig <- fig %>% add_trace(y = ~data$`Puma concolor`, name = 'Puma')
+fig <- fig %>% add_trace(y = ~data$`Tayassu pecari`, name = 'WLP')
+
+#fig <- fig %>% add_trace(y = ~data$`Tapirus bairdii`, name = 'Tapir')
 fig <- fig %>% layout(yaxis = list(title = 'Count'), barmode = 'stack')
 
 fig
@@ -1047,12 +1073,12 @@ m <- leaflet() %>%
 m 
 ```
 
-And a plot for just the cats (last 2 weeks):
+And a plot for just the mammals (last 2 weeks):
 
 ```{r, echo=F}
 
 # New map
-ids <- tmp_cr_48_shp$name[tmp_cr_48_shp$taxon_canonical_name %in% c("Puma concolor", "Panthera onca", "Leopardus pardalis")]
+ids <- tmp_cr_48_shp$name[tmp_cr_48_shp$taxon_canonical_name %in% c("Puma concolor", "Panthera onca", "Leopardus pardalis", "Tayassu pecari")]
 i <- 1
 m <- leaflet() %>%
   # Add a satellite image layer
@@ -1105,10 +1131,10 @@ i <-1
 m 
 ```
 
-And tapirs
 
-```{r, echo=F}
+```{r, echo=F, eval=F}
 
+# Tapirs
 # New map
 ids <- tmp_cr_48_shp$name[tmp_cr_48_shp$taxon_canonical_name %in% c("Tapirus bairdii")]
 i <- 1
@@ -1962,10 +1988,10 @@ ids <- unique(sub_dat_df$name)
   
 ```
 
-Just the cats:
+Just the mammals:
 
 ```{r}
-tmp_shp <- dat_shp[dat_shp$taxon_canonical_name %in% c("Panthera onca", "Puma concolor", "Leopardus pardus"),]
+tmp_shp <- dat_shp[dat_shp$taxon_canonical_name %in% c("Panthera onca", "Puma concolor", "Leopardus pardus", "Tayassu pecari"),]
 tmp_clus_res <- clus_res[clus_res$species %in% c("Panthera onca", "Puma concolor", "Leopardus pardus"),]
 
 
@@ -3523,7 +3549,7 @@ fig
 
 ### Reporting frequencies
 
-Average number of locations per day (last 14 days):
+Average number of locations per hour (last 14 days). Note this doesnt count the hours when the collar doesnt report:
 
 ```{r, echo=F}
 
