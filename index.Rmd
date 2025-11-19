@@ -308,6 +308,12 @@ osa_campus <- st_read(shp03)
 # 
 # m
 
+# Add corral coordinates
+
+# 
+corral <-st_sf(
+  geometry = st_sfc(st_point(c(-83.355923, 8.428206)), crs = 4326))
+
 ```
 
 *Last data request: `r now(tzone = "America/Costa_Rica")`*
@@ -523,9 +529,14 @@ addPolylines(data = trails, color = "black", weight=2,opacity=1)
 
   m <- m %>%
       # Add survey location
-      addMarkers(lng=cr_locs$longitude,
-                         lat=cr_locs$latitude, 
-                         popup=cr_locs$location_code) %>% 
+      # rmeove vulture capture locations
+      #addMarkers(lng=cr_locs$longitude,
+      #                   lat=cr_locs$latitude, 
+      #                   popup=cr_locs$location_code) %>% 
+            # Add corral
+      addMarkers(lng=-83.355923,
+                         lat=8.428206, 
+                         popup="Peccary Corral") %>%
       #addLegend(position= "topright", colors=tmp_cr_shp$colours, 
        #         labels=names ,opacity = 0.7, title = "Animals") %>%
       addScaleBar(position="topleft", 
@@ -1055,10 +1066,15 @@ m <- leaflet() %>%
     }
 
   m <- m %>%
-      # Add survey location
-      addMarkers(lng=cr_locs$longitude,
-                         lat=cr_locs$latitude, 
-                         popup=cr_locs$location_code) %>% 
+           # Add survey location
+      # rmeove vulture capture locations
+      #addMarkers(lng=cr_locs$longitude,
+      #                   lat=cr_locs$latitude, 
+      #                   popup=cr_locs$location_code) %>% 
+            # Add corral
+      addMarkers(lng=-83.355923,
+                         lat=8.428206, 
+                         popup="Peccary Corral") %>%
       #addLegend(position= "topright", colors=tmp_cr_48_shp$colours, 
       #          labels=ids ,opacity = 0.7, title = "Animals") %>%
       addScaleBar(position="topleft", 
@@ -1117,6 +1133,10 @@ i <-1
   m <- m %>%
       # Add survey location
       addPolylines(data=polini_shp, fill="blue", stroke=F) %>% 
+            # Add corral
+      addMarkers(lng=-83.355923,
+                         lat=8.428206, 
+                         popup="Peccary Corral") %>%
       #addLegend(position= "topright", colors=tmp_cr_48_shp$colours, 
       #          labels=ids ,opacity = 0.7, title = "Animals") %>%
       addScaleBar(position="topleft", 
