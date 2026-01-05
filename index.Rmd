@@ -1475,7 +1475,7 @@ Key:
 - Hover over the circle for gps coordinates, cluster radius, number of points in the cluster and duration of the event
 
 ### Costa Rica
-```{r ch28, eval=F, echo=F, message=F, warning=F, eval=T}
+```{r ch28, eval=F, echo=F, message=F, warning=F, eval=F}
 # Code derived from
 # https://github.com/movestore/Daily-Rest-Sites
 #library('maptools')
