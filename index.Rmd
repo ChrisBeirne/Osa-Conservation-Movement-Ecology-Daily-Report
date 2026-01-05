@@ -436,7 +436,7 @@ tmp2[, c("name","taxon_canonical_name",  "timestamp_end", "days_since_check_in")
 
 The proportion of active tags by country and species:
 
-```{r, echo=F, eval=F}
+```{r ch06, echo=F, eval=F}
 # And by species:
 fig <- plot_ly()
 # All vultures - Species
@@ -446,7 +446,7 @@ fig %>% add_pie(data = dplyr::count(check_in_summary, taxon_canonical_name), lab
 
 ```
 
-```{r, echo=F}
+```{r ch07, echo=F}
 
 data <- t(as.data.frame.matrix(table(check_in_summary$taxon_canonical_name, check_in_summary$country)))
 
@@ -473,7 +473,7 @@ Last 14 days:
 
 ### Costa Rica
 
-```{r, echo=F}
+```{r ch08, echo=F}
 tmp_cr <- dat[dat$country=="costa_rica",]
 tmp_cr_shp <- dat_shp[dat_shp$country=="costa_rica",]
 
@@ -491,7 +491,7 @@ tmp_cr_shp$colours <- col.cat[tmp_cr_shp$name]
 
 We currently have `r length(unique(tmp_cr$name))` devices transmitting data in Costa Rica:
 
-```{r, echo=F}
+```{r ch09, echo=F}
 
 # New map
 ids <- tmp_cr_shp$name
@@ -552,7 +552,7 @@ m
 ```
 
 Daily schedule of the tags:
-```{r, echo=F, warning=F, message=F}
+```{r ch10, echo=F, warning=F, message=F}
 
 xform <- list(categoryorder = "array",
               categoryarray = c(check_in_summary$name))
@@ -589,7 +589,7 @@ fig
 ```
 ### Peru
 
-```{r, echo=F}
+```{r ch11, echo=F}
 tmp_peru <- dat[dat$country=="peru",]
 tmp_peru_shp <- dat_shp[dat_shp$country=="peru",]
 
@@ -608,7 +608,7 @@ tmp_peru_shp$colours <- col.cat[tmp_peru_shp$name]
 We currently have `r length(unique(tmp_peru$name))` devices transmitting data in Peru:
 
 
-```{r, echo=F}
+```{r ch12, echo=F}
 
 # New map
 ids <- tmp_peru_shp$name
@@ -668,7 +668,7 @@ m
 
 Daily schedule of the tags (note this is in Costa Rica time):
 
-```{r, echo=F, warning=F, message=F}
+```{r ch13, echo=F, warning=F, message=F}
 
 xform <- list(categoryorder = "array",
               categoryarray = c(check_in_summary$name))
@@ -708,7 +708,7 @@ fig
 
 ### Ecuador
 
-```{r, echo=F}
+```{r ch14, echo=F}
 tmp_ecuador <- dat[dat$country=="ecuador",]
 tmp_ecuador_shp <- dat_shp[dat_shp$country=="ecuador",]
 
@@ -727,7 +727,7 @@ tmp_ecuador_shp$colours <- col.cat[tmp_ecuador_shp$name]
 We currently have `r length(unique(tmp_ecuador$name))` devices transmitting data in ecuador:
 
 
-```{r, echo=F}
+```{r ch15, echo=F}
 # New map
 ids <- tmp_ecuador_shp$name
 i <- 1
@@ -781,7 +781,7 @@ m
 
 Daily schedule of the tags (note this is in Costa Rica time):
 
-```{r, echo=F, warning=F, message=F}
+```{r ch16, echo=F, warning=F, message=F}
 
 
 xform <- list(categoryorder = "array",
@@ -822,7 +822,7 @@ fig
 
 ### Piro
 
-```{r}
+```{r ch17}
 
 sheet_data <- as.data.frame(sheet02)
 
@@ -902,7 +902,7 @@ traps_map
 
 ### Lomas
 
-```{r}
+```{r ch18}
 
 sheet_data <- as.data.frame(sheet02)
 
@@ -988,7 +988,7 @@ The following maps relate to just the last 48 hours of data for actively transmi
 
 ### Costa Rica
 
-```{r echo=F, message=FALSE, warning=FALSE}
+```{r ch19, echo=F, message=FALSE, warning=FALSE}
 # Last 48 hours
 # Vulture
 tmp_cr_48 <- dat[dat$country=="costa_rica" & dat$timestamp > max(animals$timestamp_end, na.rm=T)-48*60*60 & dat$taxon_canonical_name %in% c("Cathartes aura" ,"Cathartes melambrotus", "Sarcoramphus papa", "Coragyps atratus"),]
@@ -1027,7 +1027,7 @@ tmp_cr_48_shp$colours <- col.cat[tmp_cr_48_shp$name]
 
 We currently have `r length(unique(tmp_cr$name))` devices actively transmitting data in Costa Rica:
 
-```{r, echo=F}
+```{r ch20, echo=F}
 # New map
 ids <- tmp_cr_48_shp$name
 i <- 1
@@ -1091,7 +1091,7 @@ m
 
 And a plot for just the mammals (last 2 weeks):
 
-```{r, echo=F}
+```{r ch21, echo=F}
 
 # New map
 ids <- tmp_cr_48_shp$name[tmp_cr_48_shp$taxon_canonical_name %in% c("Puma concolor", "Panthera onca", "Leopardus pardalis", "Tayassu pecari")]
@@ -1152,7 +1152,7 @@ m
 ```
 
 
-```{r, echo=F, eval=F}
+```{r ch22, echo=F, eval=F}
 
 # Tapirs
 # New map
@@ -1214,7 +1214,7 @@ m
 ### Peru
 
 
-```{r echo=F, message=FALSE, warning=FALSE}
+```{r ch23, echo=F, message=FALSE, warning=FALSE}
 # Last 48 hours
 # Vulture
 tmp_pe_48 <- dat[dat$country=="peru" & dat$timestamp > max(animals$timestamp_end, na.rm=T)-48*60*60 & dat$taxon_canonical_name %in% c("Cathartes aura" ,"Cathartes melambrotus", "Sarcoramphus papa", "Coragyps atratus"),]
@@ -1253,7 +1253,7 @@ tmp_pe_48_shp$colours <- col.cat[tmp_pe_48_shp$name]
 
 We currently have `r length(unique(tmp_pe_48$name))` devices actively transmitting data in Peru:
 
-```{r, echo=F}
+```{r ch24, echo=F}
 # New map
 ids <- tmp_pe_48_shp$name
 i <- 1
@@ -1311,7 +1311,7 @@ m
 
 And a plot for just the cats (last 2 weeks):
 
-```{r, echo=F}
+```{r ch25, echo=F}
 
 # New map
 ids <- tmp_pe_48_shp$name[tmp_pe_48_shp$taxon_canonical_name %in% c("Puma concolor", "Panthera onca", "Leopardus pardalis")]
@@ -1371,7 +1371,7 @@ m
 
 ### Ecuador
 
-```{r, echo=F, message=F, warning=F}
+```{r ch26, echo=F, message=F, warning=F}
 # Subset to 48 hours
 tmp_ecuador_48 <- dat[dat$country=="ecuador" & dat$timestamp > max(ymd_hms(animals$timestamp_end),na.rm=T)-48*60*60,]
 
@@ -1400,7 +1400,7 @@ tmp_ecuador_48_shp$colours <- col.cat[tmp_ecuador_48_shp$name]
 
 We currently have `r length(unique(tmp_ecuador$name))` devices transmitting data in ecuador:
 
-```{r, echo=F}
+```{r ch27, echo=F}
 # New map
 ids <- tmp_ecuador_48_shp$name
 i <- 1
@@ -1475,7 +1475,7 @@ Key:
 - Hover over the circle for gps coordinates, cluster radius, number of points in the cluster and duration of the event
 
 ### Costa Rica
-```{r, eval=F, echo=F, message=F, warning=F, eval=T}
+```{r ch28, eval=F, echo=F, message=F, warning=F, eval=T}
 # Code derived from
 # https://github.com/movestore/Daily-Rest-Sites
 #library('maptools')
@@ -2010,7 +2010,7 @@ ids <- unique(sub_dat_df$name)
 
 Just the mammals:
 
-```{r, eval=F}
+```{r ch29, eval=F}
 tmp_shp <- dat_shp[dat_shp$taxon_canonical_name %in% c("Panthera onca", "Puma concolor", "Leopardus pardus", "Tayassu pecari"),]
 tmp_clus_res <- clus_res[clus_res$species %in% c("Panthera onca", "Puma concolor", "Leopardus pardus"),]
 
@@ -2088,7 +2088,7 @@ The following is a list of all of the clusters in the above map, ordered by age 
 *NOTE* Ignore clusters around the blue marker as that is a known supplementary feeding location at a lodge. 
 
 
-```{r, eval=T, echo=F, message=F, warning=F, eval=F}
+```{r ch30, eval=T, echo=F, message=F, warning=F, eval=F}
 # Code derived from
 # https://github.com/movestore/Daily-Rest-Sites
 #library('maptools')
@@ -2628,7 +2628,7 @@ ids <- unique(sub_dat_df$name)
 
 The following is a list of all of the clusters in the above map, ordered by age (newest first):
 
-```{r, echo=F, warning=F, message=F, eval=T, eval=F}
+```{r ch31, echo=F, warning=F, message=F, eval=T, eval=F}
  tmp <- clus_res[,c("local.identifier","clus_age","timestamp.first","timestamp.last" ,"rest.mean.long", "rest.mean.lat", "rest.nposi", "rest.duration", "code")]
  tmp <- tmp[order(tmp$timestamp.first, decreasing=T),]
  tmp$date <- substr(tmp$timestamp.first,1,10)
@@ -2662,7 +2662,7 @@ If a birds night-time roost is does not change then the average roost spacing wi
 
 #### Costa Rica
 
-```{r, eval=T, echo=F, warning=F, message=F}
+```{r ch32, eval=T, echo=F, warning=F, message=F}
 sub_dat <- mov_dat[mov_dat$location_lat>0,]
 # Remove the non-vultures
 sub_dat <- sub_dat[sub_dat$name %in% animals$name[animals$taxon_canonical_name %in% c("Cathartes aura", "Sarcoramphus papa", "Cathartes melambrotus", "Coragyps atratus" )],]
@@ -2746,7 +2746,7 @@ night_shp_df[,c("name", "roost_spacing_km")] %>%
 
 You can see the distribution of the nightime locations with the following map.  Where: the points mark the first and last observations from each day, and the lines connect those points. Animals which are nesting will have a very tight cluster of points. 
 
-```{r, eval=T, echo=F}
+```{r ch33, eval=T, echo=F}
 m <- leaflet() %>%
   # Add a satellite image layer  
 
@@ -2848,7 +2848,7 @@ m
 
 #### Peru
 
-```{r, eval=T, echo=F, warning=F, message=F}
+```{r ch34, eval=T, echo=F, warning=F, message=F}
 sub_dat <- mov_dat[mov_dat$location_lat<(-6),]
 # Remove the non-vultures
 sub_dat <- sub_dat[sub_dat$name %in% animals$name[animals$taxon_canonical_name %in% c("Cathartes aura", "Sarcoramphus papa", "Cathartes melambrotus", "Coragyps atratus" )],]
@@ -2932,7 +2932,7 @@ night_shp_df[,c("name", "roost_spacing_km")] %>%
 
 You can see the distribution of the nightime locations with the following map.  Where: the points mark the first and last observations from each day, and the lines connect those points. Animals which are nesting will have a very tight cluster of points. 
 
-```{r, eval=T, echo=F}
+```{r ch35, eval=T, echo=F}
 m <- leaflet() %>%
   # Add a satellite image layer  
 
@@ -2966,7 +2966,7 @@ m
 
 
 
-```{r, eval=F}
+```{r ch36, eval=F}
 # Heat maps
 
 #The following maps are heat maps of all of the data we have for certain individuals. Note, we do not do this for every individual as it #would mean using a lot of bandwidth each time the report updates.
@@ -3051,7 +3051,7 @@ leaflet() %>%
 
 
 
-```{r, eval=F}
+```{r ch37, eval=F}
 ### Tuva
 
 #Tapir
@@ -3128,7 +3128,7 @@ leaflet() %>%
 
 
 
-```{r, eval=F}
+```{r ch38, eval=F}
 ### Pardo
 
 # Create heatmaps using lifetime tracks
@@ -3203,7 +3203,7 @@ leaflet() %>%
 
 
 
-```{r, eval=F}
+```{r ch39, eval=F}
 
 # Interactions
 
@@ -3322,7 +3322,7 @@ m
 ```
 
 
-```{r, eval=F,echo=F, message=F, warning=F, include=F}
+```{r ch40, eval=F,echo=F, message=F, warning=F, include=F}
 
 # Harness release
 
@@ -3519,7 +3519,7 @@ The following plots track how the tags are performing in the field.
 ###  Battery status
 Average battery level (last 14 days):
 
-```{r, echo=F, warning=FALSE}
+```{r ch41, echo=F, warning=FALSE}
 cols<- c("#fc8d59", "#99d594", "#0099ff")
 #str(check_in_summary)
 
@@ -3546,7 +3546,7 @@ fig
 
 Average horizontal location accuracy (last 14 days):
 
-```{r, echo=F, warning=F}
+```{r ch42, echo=F, warning=F}
 
 tmp <- check_in_summary[is.na(check_in_summary$loc_accuracy)==F,]
 
@@ -3571,7 +3571,7 @@ fig
 
 Average number of locations per hour (last 14 days). Note this doesnt count the hours when the collar doesnt report:
 
-```{r, echo=F}
+```{r ch43, echo=F}
 
 tmp <- check_in_summary[is.na(check_in_summary$locs_per_hour)==F,]
 
@@ -3598,7 +3598,7 @@ The plots below shows a point each time we have a location at a given time.
 
 #### Costa Rica
 
-```{r, echo=F}
+```{r ch44, echo=F}
 library(plotly)
 yform <- list(categoryorder = "array",
               categoryarray = unique(tmp_cr$name))
@@ -3619,7 +3619,7 @@ fig
 
 #### Peru
 
-```{r, echo=F}
+```{r ch45, echo=F}
 #library(plotly)
 yform <- list(categoryorder = "array",
               categoryarray = unique(tmp_cr$name))
@@ -3641,7 +3641,7 @@ fig
 
 #### Ecuador
 
-```{r, echo=F}
+```{r ch46, echo=F}
 #library(plotly)
 yform <- list(categoryorder = "array",
               categoryarray = unique(tmp_cr$name))
