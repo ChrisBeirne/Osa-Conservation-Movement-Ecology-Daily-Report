@@ -1475,7 +1475,7 @@ Key:
 - Hover over the circle for gps coordinates, cluster radius, number of points in the cluster and duration of the event
 
 ### Costa Rica
-```{r, eval=T, echo=F, message=F, warning=F, eval=T}
+```{r, eval=F, echo=F, message=F, warning=F, eval=T}
 # Code derived from
 # https://github.com/movestore/Daily-Rest-Sites
 #library('maptools')
@@ -2010,7 +2010,7 @@ ids <- unique(sub_dat_df$name)
 
 Just the mammals:
 
-```{r}
+```{r, eval=F}
 tmp_shp <- dat_shp[dat_shp$taxon_canonical_name %in% c("Panthera onca", "Puma concolor", "Leopardus pardus", "Tayassu pecari"),]
 tmp_clus_res <- clus_res[clus_res$species %in% c("Panthera onca", "Puma concolor", "Leopardus pardus"),]
 
@@ -2064,7 +2064,7 @@ ids <- unique(tmp_shp$name)
 
 The following is a list of all of the clusters in the above map, ordered by age (newest first):
 
-```{r, echo=F, warning=F, message=F, eval=T}
+```{r, echo=F, warning=F, message=F, eval=F}
  tmp <- clus_res[,c("local.identifier","clus_age","timestamp.first","timestamp.last" ,"rest.mean.long", "rest.mean.lat", "rest.nposi", "rest.duration", "code")]
  tmp <- tmp[order(tmp$timestamp.first, decreasing=T),]
  tmp$date <- substr(tmp$timestamp.first,1,10)
@@ -2088,7 +2088,7 @@ The following is a list of all of the clusters in the above map, ordered by age 
 *NOTE* Ignore clusters around the blue marker as that is a known supplementary feeding location at a lodge. 
 
 
-```{r, eval=T, echo=F, message=F, warning=F, eval=T}
+```{r, eval=T, echo=F, message=F, warning=F, eval=F}
 # Code derived from
 # https://github.com/movestore/Daily-Rest-Sites
 #library('maptools')
@@ -2628,7 +2628,7 @@ ids <- unique(sub_dat_df$name)
 
 The following is a list of all of the clusters in the above map, ordered by age (newest first):
 
-```{r, echo=F, warning=F, message=F, eval=T, eval=T}
+```{r, echo=F, warning=F, message=F, eval=T, eval=F}
  tmp <- clus_res[,c("local.identifier","clus_age","timestamp.first","timestamp.last" ,"rest.mean.long", "rest.mean.lat", "rest.nposi", "rest.duration", "code")]
  tmp <- tmp[order(tmp$timestamp.first, decreasing=T),]
  tmp$date <- substr(tmp$timestamp.first,1,10)
